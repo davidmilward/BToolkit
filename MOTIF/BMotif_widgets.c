@@ -18733,7 +18733,7 @@ print_debug(23);
     int BLIB_in_path;
     char* PATH;
     char BLIB[PATH_MAX];
-    char env[PATH_MAX];
+    char *env;
     /* /*/
 
 print_debug(231);
@@ -18785,7 +18785,15 @@ print_debug(231);
     if(BLIB_in_path==0)
     {
     	/* add $BKIT/BLIB to path */
-	
+		/* sized dynamically: PATH can exceed PATH_MAX (1024 on macOS);
+		   putenv keeps the pointer, so it must not be freed */
+		env = malloc ( strlen ( "PATH=:" ) + strlen ( BLIB )
+		               + ( PATH != NULL ? strlen ( PATH ) : 0 ) + 1 );
+		if ( env == NULL ) {
+		  printf ( "\n              Cannot perform malloc\n" );
+		  AbortedMsg ();
+		  Kill_bplatform_and_exit ( 0, 0 );
+		}
 		env[0]='\0';
 		strcat(env,"PATH=");
 		strcat(env,BLIB);

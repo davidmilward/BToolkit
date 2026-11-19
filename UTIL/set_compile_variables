@@ -148,6 +148,10 @@ set variables_set = 0
 	     setenv FLAGS "-g -ggdb" #-arch ppc
 	     setenv OPT "-arch ppc"
 	   breaksw
+	   case ARM_SUB_VERSION:
+	     setenv FLAGS "-g -fcommon -std=gnu89 -Wno-implicit-function-declaration -Wno-implicit-int -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-return-type -Wno-deprecated-non-prototype"
+	     setenv OPT ""
+	   breaksw
 	   case INTEL_SUB_VERSION:
 	     # -arch i386 -m64 -malign-double -Wcast-align
    	     setenv FLAGS "-g -ggdb"
@@ -166,6 +170,10 @@ set variables_set = 0
 	setenv  CC_opt_Motif		"$OPT"
 	setenv  CC_X_incl_dir   	"-I/usr/X11R6/include"
 	setenv  CC_X_link_dir		"$sdk -L/usr/X11R6/lib"
+	if ( -d /opt/homebrew/include/Xm ) then
+	  setenv  CC_X_incl_dir   	"-I/opt/homebrew/include"
+	  setenv  CC_X_link_dir		"-L/opt/homebrew/lib"
+	endif
  	setenv  CC_X_link_lib		"-lXm -lXt -lX11"  #-lXm /sw/lib/libXm.a
 	setenv  CC_non_X_incl_dir  	""
 	setenv  CC_non_X_link_dir	"$sdk"

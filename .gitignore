@@ -25,3 +25,4 @@ BKIT/
 # The build trace
 UTIL/build_trace.txt
 BEESRC/b
+BEESRC/b.dSYM/

@@ -159,8 +159,10 @@ switch ( $PLATFORM )
     breaksw
   case Darwin:
     setenv VERSION MAC_VERSION
-    if ( $PROCESSOR == intel ) then
+    if ( $PROCESSOR == intel || $PROCESSOR == i386 ) then
       setenv SUB_VERSION INTEL_SUB_VERSION
+    else if ( $PROCESSOR == arm ) then
+      setenv SUB_VERSION ARM_SUB_VERSION
     else
       setenv SUB_VERSION POWERPC_SUB_VERSION
     endif

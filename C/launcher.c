@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 	char* executabledir;
 	size_t exelen=0;
 	char env1[PATH_MAX];
-	char env3[PATH_MAX];
+	char *env3;
 	char bkit[PATH_MAX];
 	char homedir[PATH_MAX];
 	char display[PATH_MAX];
@@ -302,10 +302,19 @@ int main(int argc, char* argv[])
 		
 	/* add $BKIT/BLIB to path */
 	
+        PATH=getenv("PATH");
+	/* sized dynamically: PATH can exceed PATH_MAX (1024 on macOS);
+	   putenv keeps the pointer, so it must not be freed */
+	env3=malloc(strlen("PATH=/BLIB:.:")+strlen(bkit)
+	            +(PATH!=NULL ? strlen(PATH) : 0)+1);
+	if(env3==NULL)
+	{
+		perror("malloc");
+		exit(1);
+	}
 	strcpy(env3,"PATH=");
 	strcat(env3,bkit);
 	strcat(env3,"/BLIB:.");
-        PATH=getenv("PATH");
 	if(PATH!=NULL)
 	{
 		strcat(env3,":");
